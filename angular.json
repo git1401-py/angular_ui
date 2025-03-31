@@ -100,36 +100,6 @@
             ],
             "scripts": []
           }
-        },
-        "storybook": {
-          "builder": "@storybook/angular:start-storybook",
-          "options": {
-            "configDir": ".storybook",
-            "browserTarget": "angular-ui:build",
-            "compodoc": true,
-            "compodocArgs": [
-              "-e",
-              "json",
-              "-d",
-              "."
-            ],
-            "port": 6006
-          }
-        },
-        "build-storybook": {
-          "builder": "@storybook/angular:build-storybook",
-          "options": {
-            "configDir": ".storybook",
-            "browserTarget": "angular-ui:build",
-            "compodoc": true,
-            "compodocArgs": [
-              "-e",
-              "json",
-              "-d",
-              "."
-            ],
-            "outputDir": "dist/storybook/angular-ui"
-          }
         }
       }
     },
@@ -169,7 +139,13 @@
           "options": {
             "configDir": "projects/angular-ui-lib/.storybook",
             "browserTarget": "angular-ui-lib:build",
-            "compodoc": false,
+            "compodoc": true,
+            "compodocArgs": [
+              "-e",
+              "json",
+              "-d",
+              "projects/angular-ui-lib"
+            ],
             "port": 6006
           }
         },
@@ -178,7 +154,13 @@
           "options": {
             "configDir": "projects/angular-ui-lib/.storybook",
             "browserTarget": "angular-ui-lib:build",
-            "compodoc": false,
+            "compodoc": true,
+            "compodocArgs": [
+              "-e",
+              "json",
+              "-d",
+              "projects/angular-ui-lib"
+            ],
             "outputDir": "dist/storybook/angular-ui-lib"
           }
         }
