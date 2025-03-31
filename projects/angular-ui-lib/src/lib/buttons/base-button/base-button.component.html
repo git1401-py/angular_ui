@@ -1,0 +1,17 @@
+<button
+  [disabled]="disabled || state === 'disabled' || state === 'loading'"
+  [class]="getButtonClasses()"
+  [attr.aria-busy]="state === 'loading'"
+  [attr.data-variant]="variant"
+  [attr.data-size]="size"
+  [attr.type]="type"
+  (click)="handleClick($event)"
+>
+  <div class="flex items-center justify-center gap-2">
+    <span *ngIf="state === 'loading'" class="spinner"></span>
+    <span><ng-content></ng-content></span>
+    <span *ngIf="iconRight" class="icon-right">
+      <ng-content select="[iconRight]"></ng-content>
+    </span>
+  </div>
+</button>
