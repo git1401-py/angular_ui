@@ -2,66 +2,124 @@
   display: inline-block;
 }
 
+// دکمه‌های عمومی
 button {
   position: relative;
   font-family: inherit;
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease-in-out;
   line-height: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 
   &:focus {
-    outline: none;
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
   }
 
   &:disabled {
     cursor: not-allowed;
+    opacity: 0.6;
   }
 }
 
-.spinner {
-  width: 1em;
-  height: 1em;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top-color: currentColor;
-  animation: spin 0.8s linear infinite;
-  display: inline-block;
-}
+// سایز‌های دکمه
+$sizes: (
+  xs: (0.625rem, 0.25rem 0.5rem),
+  sm: (0.75rem, 0.375rem 0.75rem),
+  md: (0.875rem, 0.5rem 1rem),
+  lg: (1rem, 0.75rem 1.25rem),
+  xl: (1.125rem, 1rem 1.5rem)
+);
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
+@each $size, $props in $sizes {
+  button[data-size="#{$size}"] {
+    font-size: nth($props, 1);
+    padding: nth($props, 2);
   }
 }
 
-// RTL Support
-:host-context([dir="rtl"]) {
-  .icon-right {
-    transform: scaleX(-1);
+// واریانت‌های دکمه
+$variants: (
+  primary: var(--color-primary),
+  secondary: var(--color-secondary),
+  success: var(--color-success),
+  danger: var(--color-destructive),
+  outline: transparent,
+  ghost: transparent,
+  link: transparent
+);
+
+@each $name, $color in $variants {
+  button[data-variant="#{$name}"] {
+    background-color: $color;
+    color: var(--color-#{$name}-foreground);
+
+    &:hover:not(:disabled) {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: none;
+    }
   }
 }
 
-// Responsive adjustments
-@media (max-width: 640px) {
-  button[data-size="lg"],
-  button[data-size="xl"] {
-    height: auto;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+// دکمه‌های `outline`
+button[data-variant="outline"] {
+  border: 1px solid var(--color-border);
+  color: var(--color-foreground);
+  background-color: transparent;
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-muted);
   }
 }
 
-// استایل‌های اضافی برای ایجاد افکت ripple (موج) هنگام کلیک
+// دکمه‌های `ghost`
+button[data-variant="ghost"] {
+  background-color: transparent;
+  color: var(--color-foreground);
+
+  &:hover:not(:disabled) {
+    background-color: var(--color-muted);
+  }
+}
+
+// دکمه‌های `link`
+button[data-variant="link"] {
+  color: var(--color-primary);
+  text-decoration: none;
+
+  &:hover:not(:disabled) {
+    text-decoration: underline;
+  }
+}
+
+// وضعیت `disabled`
+button[data-state="disabled"] {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+// افکت `ripple` هنگام کلیک
 button {
   position: relative;
   overflow: hidden;
 
   &::after {
-    content: '';
+    content: "";
     display: block;
     position: absolute;
     width: 100%;
@@ -84,54 +142,49 @@ button {
   }
 }
 
-// Hover effects based on variant
-button {
-  &[data-variant="primary"],
-  &[data-variant="secondary"],
-  &[data-variant="danger"],
-  &[data-variant="success"] {
-    &:hover:not(:disabled) {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+// دکمه‌های `loading`
+button[data-state="loading"] {
+  position: relative;
+  color: transparent !important;
+  pointer-events: none;
 
-    &:active:not(:disabled) {
-      transform: translateY(0);
-      box-shadow: none;
-    }
-  }
-
-  &[data-variant="outline"],
-  &[data-variant="ghost"] {
-    &:hover:not(:disabled) {
-      transform: translateY(-1px);
-    }
-
-    &:active:not(:disabled) {
-      transform: translateY(0);
-    }
-  }
-
-  &[data-variant="link"] {
-    &:hover:not(:disabled) {
-      text-decoration: underline;
-    }
-  }
-}
-
-// اضافه کردن استایل‌های مناسب برای حالت focus
-button:focus-visible {
-  outline: 2px solid var(--color-ring);
-  outline-offset: 2px;
-}
-
-// افکت transition برای حالت loading
-button[aria-busy="true"] {
   .spinner {
-    opacity: 1;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
+}
 
-  > span:not(.spinner) {
-    opacity: 0.7;
+.spinner {
+  width: 1em;
+  height: 1em;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: currentColor;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ریسپانسیو برای دکمه‌های بزرگ‌تر در موبایل
+@media (max-width: 640px) {
+  button[data-size="lg"],
+  button[data-size="xl"] {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+}
+
+// پشتیبانی از `RTL`
+:host-context([dir="rtl"]) {
+  .icon-right {
+    transform: scaleX(-1);
   }
 }
