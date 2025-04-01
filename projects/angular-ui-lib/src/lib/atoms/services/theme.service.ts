@@ -1,6 +1,4 @@
-// atomic-ui-lib/projects/atomic-ui-lib/src/lib/services/theme.service.ts
-
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 export interface ThemeColors {
@@ -46,9 +44,9 @@ export const defaultLightTheme: ThemeColors = {
   'muted-foreground': 'hsl(220 8.9% 46.1%)',
   popover: 'hsl(0 0% 100%)',
   'popover-foreground': 'hsl(220.9 39.3% 11%)',
-  border: 'hsl(220 13% 91%)',
+  border: 'hsl(220 8.9% 46.1%)',
   input: 'hsl(220 13% 91%)',
-  ring: 'hsl(224.3 76.3% 48%)',
+  ring: 'hsl(220 8.9% 46.1%)',
 };
 
 export const defaultDarkTheme: ThemeColors = {
@@ -70,33 +68,37 @@ export const defaultDarkTheme: ThemeColors = {
   'muted-foreground': 'hsl(217.9 10.6% 64.9%)',
   popover: 'hsl(224 71.4% 4.1%)',
   'popover-foreground': 'hsl(210 20% 98%)',
-  border: 'hsl(215 27.9% 16.9%)',
+  border: 'hsl(210 20% 98%)',
   input: 'hsl(215 27.9% 16.9%)',
-  ring: 'hsl(263.4 70% 50.4%)',
+  ring: 'hsl(210 20% 98%)',
 };
-
 @Injectable({
   providedIn: 'root'
 })
-export class ThemeService {
+export class ThemeService implements OnInit {
   private readonly themeKey = 'atomic-ui-theme';
   private readonly themeColorsKey = 'atomic-ui-theme-colors';
-  private isDarkMode = new BehaviorSubject<boolean>(this.getInitialThemeMode());
-  private currentThemeColors = new BehaviorSubject<ThemeColors>(this.getInitialThemeColors());
+  private isDarkMode = new BehaviorSubject<boolean>(false);
+  private currentThemeColors = new BehaviorSubject<ThemeColors>(defaultLightTheme);
 
   isDarkMode$ = this.isDarkMode.asObservable();
   currentThemeColors$ = this.currentThemeColors.asObservable();
 
-  constructor() {
+  constructor() {}
+
+  ngOnInit(): void {
+    // به محض بارگذاری کامل اپلیکیشن، مقداردهی به حالت تم
+    this.isDarkMode.next(this.getInitialThemeMode());
+    this.currentThemeColors.next(this.getInitialThemeColors());
     this.applyTheme();
   }
 
   toggleTheme(): void {
     const newMode = !this.isDarkMode.value;
     this.isDarkMode.next(newMode);
+
     localStorage.setItem(this.themeKey, newMode ? 'dark' : 'light');
 
-    // تغییر رنگ‌ها بر اساس تم
     const newColors = newMode ? defaultDarkTheme : defaultLightTheme;
     this.currentThemeColors.next(newColors);
     this.saveThemeColors(newColors);
@@ -149,14 +151,12 @@ export class ThemeService {
     const root = document.documentElement;
     const colors = this.currentThemeColors.value;
 
-    // اعمال کلاس تم به root
     if (this.isDarkMode.value) {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
 
-    // اعمال متغیرهای CSS
     Object.entries(colors).forEach(([key, value]) => {
       root.style.setProperty(`--color-${key}`, value);
     });
