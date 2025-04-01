@@ -4,12 +4,11 @@
   [state]="state"
   [disabled]="disabled"
   [type]="type"
-  [iconRight]="iconRight"
   [preventMultipleClicks]="preventMultipleClicks"
   [clickCooldownMs]="clickCooldownMs"
   (buttonClick)="handleClick($event)"
->
+>Primary
   <ng-content></ng-content>
-<!--  <ng-content select="[iconRight]"></ng-content>-->
+  <ng-content select="[iconRight]"></ng-content>
 <!--  <ng-content select="[iconRight]" iconRight></ng-content>-->
 </lib-base-button>

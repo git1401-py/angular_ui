@@ -6,6 +6,7 @@ import { BaseButtonComponent, ButtonSize, ButtonState } from '../base-button/bas
   selector: 'lib-primary-button',
   standalone: true,
   imports: [CommonModule, BaseButtonComponent],
+  // template: `<h1>hiiii</h1>`,
   templateUrl: './primary-button.component.html',
 })
 export class PrimaryButtonComponent {
