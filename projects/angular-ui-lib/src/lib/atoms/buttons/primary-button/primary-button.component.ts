@@ -10,6 +10,7 @@ import { BaseButtonComponent, ButtonSize, ButtonState } from '../base-button/bas
   templateUrl: './primary-button.component.html',
 })
 export class PrimaryButtonComponent {
+  @Input() variant: string = 'primary';
   @Input() size: ButtonSize = 'md';
   @Input() state: ButtonState = 'idle';
   @Input() disabled = false;

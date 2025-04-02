@@ -13,7 +13,7 @@
     <!-- افکت Ripple -->
     <span class="ripple-effect"></span>
     <span *ngIf="state === 'loading'" class="spinner"></span>
-    <span><ng-content></ng-content></span>
+    <span>{{label}}<ng-content></ng-content></span>
     <span *ngIf="iconRight" class="icon-right">
       <ng-content select="[iconRight]"></ng-content>
     </span>
