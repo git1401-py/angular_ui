@@ -1,18 +1,15 @@
-import type { StorybookConfig } from '@storybook/angular';
+import type { StorybookConfig } from "@storybook/angular";
+import "./preview";
+console.log("🚀 Storybook Main.ts is Loaded!"); // بررسی لاگ
 
 const config: StorybookConfig = {
-  "stories": [
-    "../src/**/*.mdx",
-    "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"
-  ],
-  "addons": [
+  stories: ["../src/**/*.stories.@(js|jsx|ts|tsx)"],
+  addons: [
+    "@storybook/addon-links",
     "@storybook/addon-essentials",
-    "@storybook/addon-onboarding",
-    "@storybook/addon-interactions"
+    "@storybook/addon-interactions",
   ],
-  "framework": {
-    "name": "@storybook/angular",
-    "options": {}
-  }
+  framework: "@storybook/angular",
 };
+
 export default config;

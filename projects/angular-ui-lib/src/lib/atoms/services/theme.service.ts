@@ -1,5 +1,6 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 
 export interface ThemeColors {
   primary: string;
@@ -44,9 +45,9 @@ export const defaultLightTheme: ThemeColors = {
   'muted-foreground': 'hsl(220 8.9% 46.1%)',
   popover: 'hsl(0 0% 100%)',
   'popover-foreground': 'hsl(220.9 39.3% 11%)',
-  border: 'hsl(220 8.9% 46.1%)',
+  border: 'hsl(220 13% 91%)',
   input: 'hsl(220 13% 91%)',
-  ring: 'hsl(220 8.9% 46.1%)',
+  ring: 'hsl(224.3 76.3% 48%)',
 };
 
 export const defaultDarkTheme: ThemeColors = {
@@ -68,97 +69,143 @@ export const defaultDarkTheme: ThemeColors = {
   'muted-foreground': 'hsl(217.9 10.6% 64.9%)',
   popover: 'hsl(224 71.4% 4.1%)',
   'popover-foreground': 'hsl(210 20% 98%)',
-  border: 'hsl(210 20% 98%)',
+  border: 'hsl(215 27.9% 16.9%)',
   input: 'hsl(215 27.9% 16.9%)',
-  ring: 'hsl(210 20% 98%)',
+  ring: 'hsl(263.4 70% 50.4%)',
 };
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class ThemeService implements OnInit {
+export class ThemeService {
   private readonly themeKey = 'atomic-ui-theme';
   private readonly themeColorsKey = 'atomic-ui-theme-colors';
-  private isDarkMode = new BehaviorSubject<boolean>(false);
-  private currentThemeColors = new BehaviorSubject<ThemeColors>(defaultLightTheme);
+  isDarkMode = new BehaviorSubject<boolean>(false);
+  private currentThemeColors = new BehaviorSubject<ThemeColors>(defaultDarkTheme);
 
   isDarkMode$ = this.isDarkMode.asObservable();
   currentThemeColors$ = this.currentThemeColors.asObservable();
 
-  constructor() {}
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    console.log('ThemeService constructor');
+    this.initializeTheme();
+  }
 
-  ngOnInit(): void {
-    // به محض بارگذاری کامل اپلیکیشن، مقداردهی به حالت تم
-    this.isDarkMode.next(this.getInitialThemeMode());
-    this.currentThemeColors.next(this.getInitialThemeColors());
+  private initializeTheme(): void {
+    console.log('🚀 Initial mode from localStorage or system preference:');
+    const initialMode = this.getInitialThemeMode();
+    this.isDarkMode.next(initialMode);
+
+    const initialColors = this.getInitialThemeColors();
+    console.log('🚀 Initial colors from localStorage:', initialColors);
+    this.currentThemeColors.next(initialColors);
+
+    if (this.isBrowser()) {
+      this.saveThemeColors(initialColors);
+    }
     this.applyTheme();
   }
 
   toggleTheme(): void {
+    console.log('in toggleTheme');
     const newMode = !this.isDarkMode.value;
     this.isDarkMode.next(newMode);
-
-    localStorage.setItem(this.themeKey, newMode ? 'dark' : 'light');
+    if (this.isBrowser()) {
+      localStorage.setItem(this.themeKey, newMode ? 'dark' : 'light');
+    }
 
     const newColors = newMode ? defaultDarkTheme : defaultLightTheme;
     this.currentThemeColors.next(newColors);
-    this.saveThemeColors(newColors);
-
+    if (this.isBrowser()) {
+      this.saveThemeColors(newColors);
+    }
     this.applyTheme();
   }
 
   setCustomTheme(colors: Partial<ThemeColors>): void {
+    console.log('in setCustomTheme');
     const currentColors = this.currentThemeColors.value;
     const newColors = { ...currentColors, ...colors };
-
     this.currentThemeColors.next(newColors);
-    this.saveThemeColors(newColors);
+    if (this.isBrowser()) {
+      this.saveThemeColors(newColors);
+    }
     this.applyTheme();
   }
 
   resetToDefaultTheme(): void {
+    console.log('in resetToDefaultTheme');
     const defaultTheme = this.isDarkMode.value ? defaultDarkTheme : defaultLightTheme;
     this.currentThemeColors.next(defaultTheme);
-    this.saveThemeColors(defaultTheme);
+    if (this.isBrowser()) {
+      this.saveThemeColors(defaultTheme);
+    }
     this.applyTheme();
   }
 
   private getInitialThemeMode(): boolean {
-    const savedTheme = localStorage.getItem(this.themeKey);
-    if (savedTheme) {
-      return savedTheme === 'dark';
+    // Ensure code runs only in the browser
+    if (this.isBrowser()) {
+      const savedTheme = localStorage.getItem(this.themeKey);
+      console.log(`🔹 Saved Theme in LocalStorage: ${savedTheme}`);
+      if (savedTheme) {
+        return savedTheme === 'dark';
+      }
     }
-    // ترجیح تم سیستم
-    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    // Default to system preference if no saved theme
+    if (this.isBrowser()) {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return false; // Default mode if running on the server
   }
 
   private getInitialThemeColors(): ThemeColors {
-    const savedColors = localStorage.getItem(this.themeColorsKey);
-    if (savedColors) {
-      try {
-        return JSON.parse(savedColors);
-      } catch (e) {
-        console.error('Could not parse saved theme colors', e);
+    // Ensure code runs only in the browser
+    if (this.isBrowser()) {
+      const savedColors = localStorage.getItem(this.themeColorsKey);
+      if (savedColors) {
+        try {
+          return JSON.parse(savedColors);
+        } catch (e) {
+          console.error('Could not parse saved theme colors', e);
+        }
       }
     }
     return this.isDarkMode.value ? defaultDarkTheme : defaultLightTheme;
   }
 
   private saveThemeColors(colors: ThemeColors): void {
-    localStorage.setItem(this.themeColorsKey, JSON.stringify(colors));
+    if (this.isBrowser()) {
+      localStorage.setItem(this.themeColorsKey, JSON.stringify(colors));
+    }
   }
 
-  private applyTheme(): void {
+  private isBrowser(): boolean {
+    return isPlatformBrowser(this.platformId);
+  }
+
+  applyTheme(): void {
+    // اطمینان از اینکه کد فقط در محیط مرورگر اجرا می‌شود
+    if (!this.isBrowser()) {
+      return;
+    }
+
+    console.log('in applyTheme');
     const root = document.documentElement;
     const colors = this.currentThemeColors.value;
 
     if (this.isDarkMode.value) {
-      document.documentElement.classList.add('dark');
+      root.classList.add('dark');
     } else {
-      document.documentElement.classList.remove('dark');
+      root.classList.remove('dark');
     }
 
     Object.entries(colors).forEach(([key, value]) => {
       root.style.setProperty(`--color-${key}`, value);
     });
+
+    // اعمال رنگ‌های background و foreground به کل پنجره
+    root.style.setProperty('--background-color', colors.background);
+    root.style.setProperty('--foreground-color', colors.foreground);
   }
 }

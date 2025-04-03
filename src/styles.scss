@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* برای پس‌زمینه و متن */
+body {
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+}
+
+/* برای رنگ پس‌زمینه کل صفحه */
+html {
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+}

@@ -91,14 +91,24 @@
                 "defaultValue": "{\n  title: 'Example/Page',\n  component: PageComponent,\n  parameters: {\n    // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout\n    layout: 'fullscreen',\n  },\n}"
             },
             {
-                "name": "preview",
+                "name": "parameters",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "projects/angular-ui-lib/.storybook/preview.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "Preview",
-                "defaultValue": "{\n  parameters: {\n    controls: {\n      matchers: {\n       color: /(background|color)$/i,\n       date: /Date$/i,\n      },\n    },\n  },\n}"
+                "type": "object",
+                "defaultValue": "{\n  // تنظیمات مربوط به actions\n  actions: { argTypesRegex: '^on.*' }, // تمامی ورودی‌های با نام `on` به عنوان اکشن‌ها در نظر گرفته می‌شوند.\n\n  // تنظیمات مربوط به controls\n  controls: {\n    expanded: true, // کنترل‌ها به صورت پیش‌فرض باز خواهند بود.\n  },\n\n  // تنظیمات مربوط به مستندات\n  docs: {\n    inlineStories: true, // داستان‌ها درون مستندات نمایش داده می‌شوند.\n    iframeHeight: 60,    // ارتفاع iframe داستان‌ها\n  },\n}"
+            },
+            {
+                "name": "Primary",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/angular-ui-lib/src/stories/base-button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "StoryObj<BaseButtonComponent>",
+                "defaultValue": "{\r\n  args: {\r\n    label: 'Primary Button',\r\n    variant: 'primary',\r\n    size: 'lg',\r\n    disabled: false,\r\n  },\r\n}"
             },
             {
                 "name": "Primary",
@@ -109,6 +119,16 @@
                 "deprecationMessage": "",
                 "type": "Story",
                 "defaultValue": "{\n  args: {\n    primary: true,\n    label: 'Button',\n  },\n}"
+            },
+            {
+                "name": "Secondary",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "projects/angular-ui-lib/src/stories/base-button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "StoryObj<BaseButtonComponent>",
+                "defaultValue": "{\r\n  args: {\r\n    label: 'Secondary Button',\r\n    variant: 'secondary',\r\n    size: 'lg',\r\n    disabled: true,\r\n  },\r\n}"
             },
             {
                 "name": "Secondary",
@@ -287,14 +307,36 @@
             ],
             "projects/angular-ui-lib/.storybook/preview.ts": [
                 {
-                    "name": "preview",
+                    "name": "parameters",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "projects/angular-ui-lib/.storybook/preview.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "Preview",
-                    "defaultValue": "{\n  parameters: {\n    controls: {\n      matchers: {\n       color: /(background|color)$/i,\n       date: /Date$/i,\n      },\n    },\n  },\n}"
+                    "type": "object",
+                    "defaultValue": "{\n  // تنظیمات مربوط به actions\n  actions: { argTypesRegex: '^on.*' }, // تمامی ورودی‌های با نام `on` به عنوان اکشن‌ها در نظر گرفته می‌شوند.\n\n  // تنظیمات مربوط به controls\n  controls: {\n    expanded: true, // کنترل‌ها به صورت پیش‌فرض باز خواهند بود.\n  },\n\n  // تنظیمات مربوط به مستندات\n  docs: {\n    inlineStories: true, // داستان‌ها درون مستندات نمایش داده می‌شوند.\n    iframeHeight: 60,    // ارتفاع iframe داستان‌ها\n  },\n}"
+                }
+            ],
+            "projects/angular-ui-lib/src/stories/base-button.stories.ts": [
+                {
+                    "name": "Primary",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/angular-ui-lib/src/stories/base-button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "StoryObj<BaseButtonComponent>",
+                    "defaultValue": "{\r\n  args: {\r\n    label: 'Primary Button',\r\n    variant: 'primary',\r\n    size: 'lg',\r\n    disabled: false,\r\n  },\r\n}"
+                },
+                {
+                    "name": "Secondary",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/angular-ui-lib/src/stories/base-button.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "StoryObj<BaseButtonComponent>",
+                    "defaultValue": "{\r\n  args: {\r\n    label: 'Secondary Button',\r\n    variant: 'secondary',\r\n    size: 'lg',\r\n    disabled: true,\r\n  },\r\n}"
                 }
             ]
         },
@@ -352,7 +394,27 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "preview",
+                "name": "parameters",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/angular-ui-lib/src/stories/base-button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Primary",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "projects/angular-ui-lib/src/stories/base-button.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Secondary",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

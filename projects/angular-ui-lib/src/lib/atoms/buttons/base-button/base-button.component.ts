@@ -15,7 +15,7 @@ export type ButtonState = 'idle' | 'loading' | 'disabled';
 })
 export class BaseButtonComponent implements OnInit  {
   colors: any;
-  @Input() label: string = 'primary';
+  @Input() label: string = 'button ';
   @Input() textColor?: string;
   @Input() backgroundColor?: string ;
   @Input() variant: ButtonVariant = 'primary';
@@ -33,6 +33,7 @@ export class BaseButtonComponent implements OnInit  {
 
   constructor(private themeService: ThemeService) {}
   ngOnInit(): void {
+    console.log('BaseButtonComponent Initial mode!');
 
     // اشتراک به Observable برای دسترسی به تم‌ها و رنگ‌ها
     this.themeService.currentThemeColors$.subscribe((colors) => {

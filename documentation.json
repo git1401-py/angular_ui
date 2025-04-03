@@ -35,7 +35,7 @@
     "components": [
         {
             "name": "AppComponent",
-            "id": "component-AppComponent-c37b0cd3abf1a68671b959ade0f8032daeacdced1ec2e0ec5ffb5936512c4ee5d2fa44c621ec3fea5b00f89db467a7847f429bbb1d5dc30adb27ecb8a9591b47",
+            "id": "component-AppComponent-3d40afa7b8e4bbd429b18617344f5333ada71669b0baf6405a1dd4047b9bcfa743ea434fe3692434926eb79c79721b040216beaa7c100f2b1dba454d56204ccd",
             "file": "src/app/app.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -62,7 +62,7 @@
                     "indexKey": "",
                     "optional": false,
                     "description": "",
-                    "line": 13
+                    "line": 14
                 }
             ],
             "methodsClass": [],
@@ -75,18 +75,22 @@
                 {
                     "name": "PrimaryButtonComponent",
                     "type": "component"
+                },
+                {
+                    "name": "SecondaryButtonComponent",
+                    "type": "component"
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\r\nimport { RouterOutlet } from '@angular/router';\r\n\r\nimport { PrimaryButtonComponent } from '../../projects/angular-ui-lib/src/lib/atoms/buttons/primary-button/primary-button.component';\r\n@Component({\r\n  selector: 'app-root',\r\n  standalone:true,\r\n  imports: [PrimaryButtonComponent],\r\n  templateUrl: './app.component.html',\r\n  styleUrl: './app.component.scss',\r\n})\r\nexport class AppComponent {\r\n  title = 'angular-ui';\r\n}\r\n",
+            "sourceCode": "import { Component } from '@angular/core';\r\nimport { RouterOutlet } from '@angular/router';\r\n\r\nimport { PrimaryButtonComponent } from '../../projects/angular-ui-lib/src/lib/atoms/buttons/primary-button/primary-button.component';\r\nimport { SecondaryButtonComponent } from '../../projects/angular-ui-lib/src/lib/atoms/buttons/secondary-button/secondary-button.component';\r\n@Component({\r\n  selector: 'app-root',\r\n  standalone:true,\r\n  imports: [PrimaryButtonComponent,SecondaryButtonComponent],\r\n  templateUrl: './app.component.html',\r\n  styleUrl: './app.component.scss',\r\n})\r\nexport class AppComponent {\r\n  title = 'angular-ui';\r\n}\r\n",
             "styleUrl": "./app.component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "extends": [],
-            "templateData": "\r\n<!--<app-root></app-root>-->\r\n<div class=\"m-3\">\r\n  <lib-primary-button></lib-primary-button>\r\n</div>\r\n\r\n"
+            "templateData": "\r\n<!--<app-root></app-root>-->\r\n<div class=\"m-3\">\r\n  <lib-primary-button></lib-primary-button>\r\n</div>\r\n<br>\r\n<div class=\"m-3\">\r\n  <lib-secondary-button></lib-secondary-button>\r\n</div>\r\n\r\n"
         },
         {
             "name": "ButtonComponent",
@@ -102,8 +106,8 @@
                 "./button.css"
             ],
             "styles": [],
-            "template": " <button  type=\"button\"\n  (click)=\"onClick.emit($event)\"\n  [ngClass]=\"classes\"\n  \"\[ngStyle]=\"{ 'background-color': backgroundColor }n>\n  {{ label }}\n</button>",
-          "templateUrl": [],
+            "template": " <button  type=\"button\"\n  (click)=\"onClick.emit($event)\"\n  [ngClass]=\"classes\"\n  [ngStyle]=\"{ 'background-color': backgroundColor }\"\n>\n  {{ label }}\n</button>",
+            "templateUrl": [],
             "viewProviders": [],
             "hostDirectives": [],
             "inputsClass": [
