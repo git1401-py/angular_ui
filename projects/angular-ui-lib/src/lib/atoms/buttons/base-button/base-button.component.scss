@@ -172,13 +172,46 @@ button[data-state="loading"] {
   }
 }
 
-// ریسپانسیو برای دکمه‌های بزرگ‌تر در موبایل
+// ریسپانسیو برای دکمه‌های بزرگ‌تر در موبایل (عرض کمتر از 640px)
 @media (max-width: 640px) {
   button[data-size="lg"],
   button[data-size="xl"] {
     width: 100%;
-    padding: 0.75rem;
+    padding: 0.75rem 1rem;
     font-size: 1rem;
+  }
+}
+
+// تنظیمات ریسپانسیو برای اندازه‌های مختلف صفحه نمایش
+@media (min-width: 640px) { // sm
+  button[data-size="sm"] {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+  button[data-size="md"] {
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 768px) { // md
+  button[data-size="md"] {
+    padding: 0.875rem 1.5rem;
+    font-size: 1.125rem;
+  }
+}
+
+@media (min-width: 1024px) { // lg
+  button[data-size="lg"] {
+    padding: 1rem 2rem;
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: 1280px) { // xl
+  button[data-size="xl"] {
+    padding: 1.25rem 2.5rem;
+    font-size: 1.5rem;
   }
 }
 
