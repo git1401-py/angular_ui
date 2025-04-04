@@ -1,6 +1,7 @@
 import {Component, Input, Output, EventEmitter, HostListener, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../services/theme.service';
+import { Subscription } from 'rxjs';
 
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'success' | 'link';//| 'warning'
@@ -15,7 +16,8 @@ export type ButtonState = 'idle' | 'loading' | 'disabled';
 })
 export class BaseButtonComponent implements OnInit  {
   colors: any;
-  @Input() label: string = 'button ';
+  @Input() label: string = '';
+  @Input() rounded: 'md' | 'lg' | 'full' = 'full';
   @Input() textColor?: string;
   @Input() backgroundColor?: string ;
   @Input() variant: ButtonVariant = 'primary';
@@ -24,23 +26,32 @@ export class BaseButtonComponent implements OnInit  {
   @Input() disabled = false;
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
   @Input() iconRight = false;
+  @Input() iconLeft = false;
   @Input() preventMultipleClicks = false;
   @Input() clickCooldownMs = 500; // Time to prevent consecutive clicks
-
   @Output() buttonClick = new EventEmitter<MouseEvent>();
 
   private isClickCooldown = false;
+  private themeSubscription?: Subscription;
 
+  rippleVisible = false;
+
+  triggerRipple() {
+    this.rippleVisible = true;
+    setTimeout(() => this.rippleVisible = false, 600);
+  }
   constructor(private themeService: ThemeService) {}
   ngOnInit(): void {
     console.log('BaseButtonComponent Initial mode!');
 
     // اشتراک به Observable برای دسترسی به تم‌ها و رنگ‌ها
-    this.themeService.currentThemeColors$.subscribe((colors) => {
+    this.themeSubscription = this.themeService.currentThemeColors$.subscribe((colors) => {
       this.colors = colors;
     });
   }
-
+  ngOnDestroy(): void {
+    this.themeSubscription?.unsubscribe();
+  }
   @HostListener('click', ['$event'])
   handleClick(event: MouseEvent): void {
     if (this.disabled || this.state === 'disabled' || this.state === 'loading' ||
@@ -69,8 +80,8 @@ export class BaseButtonComponent implements OnInit  {
     this.res_obj =  {
       'color': colors[this.variant],
       'background-color': colors[`${this.variant}-foreground`],
-      'border-color': colors['border'] ,
-      'box-shadow': `0 2px 4px ${colors['ring'] }`,
+      'border-color': colors[this.variant] ,
+      'box-shadow': `0 1px 2px ${colors[this.variant]}`,
     };
     if (this.backgroundColor) {
       this.res_obj = {...this.res_obj,'background-color':this.backgroundColor};
@@ -85,7 +96,7 @@ export class BaseButtonComponent implements OnInit  {
 
   getButtonClasses(): string {
 
-    const baseClasses = 'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
+    // const baseClasses = 'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
 
     const sizeClasses = {
       'xs': 'h-8 px-2 text-xs',
@@ -101,7 +112,10 @@ export class BaseButtonComponent implements OnInit  {
     };
 
     // return `${baseClasses} ${sizeClasses[this.size]} ${variantClasses[this.variant]} ${stateClasses[this.state]}`;
-    return `${baseClasses} ${sizeClasses[this.size]} ${stateClasses[this.state]}`;
-  }
+    return [
+      'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none',
+      sizeClasses[this.size],
+      stateClasses[this.state]
+    ].join(' ');  }
 
 }

@@ -3,6 +3,7 @@
   [attr.aria-busy]="state === 'loading'"
   [attr.data-variant]="variant"
   [attr.data-size]="size"
+  [attr.data-rounded]="rounded"
   [attr.type]="type || 'button'"
   (click)="handleClick($event)"
   [class]="getButtonClasses()"
@@ -11,11 +12,14 @@
 <!--  class =" bg-blue-100"-->
   <div class="flex items-center justify-center gap-2">
     <!-- افکت Ripple -->
-    <span class="ripple-effect"></span>
+    <span class="ripple-effect" *ngIf="rippleVisible"></span>
     <span *ngIf="state === 'loading'" class="spinner"></span>
-    <span>{{label}}<ng-content></ng-content></span>
+    <span *ngIf="state !== 'loading'">{{ label }}<ng-content></ng-content></span>
     <span *ngIf="iconRight" class="icon-right">
       <ng-content select="[iconRight]"></ng-content>
+    </span>
+    <span *ngIf="iconLeft" class="icon-left">
+      <ng-content select="[iconLeft]"></ng-content>
     </span>
   </div>
 </button>

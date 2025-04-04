@@ -1,31 +1,50 @@
 import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BaseButtonComponent, ButtonSize, ButtonState } from '../base-button/base-button.component';
+import {BaseButtonComponent, ButtonSize, ButtonState, ButtonVariant} from '../base-button/base-button.component';
 
 @Component({
   selector: 'lib-primary-button',
   standalone: true,
   imports: [CommonModule, BaseButtonComponent],
-  // template: `<h1>hiiii</h1>`,
-  templateUrl: './primary-button.component.html',
+  template: `
+    <lib-base-button
+      [label]="label"
+      [variant]="variant"
+      [rounded]="rounded"
+      [size]="size"
+      [state]="state"
+      [disabled]="disabled"
+      [type]="type"
+      [preventMultipleClicks]="preventMultipleClicks"
+      [clickCooldownMs]="clickCooldownMs"
+      [iconRight]="iconRight"
+      [textColor]="textColor"
+      [backgroundColor]="backgroundColor"
+      (buttonClick)="handleClick($event)"
+    >
+      <ng-content></ng-content>
+      <ng-content select="[iconRight]" *ngIf="iconRight"></ng-content>
+      <ng-content select="[iconLeft]" *ngIf="iconLeft"></ng-content>
+    </lib-base-button>
+  `
 })
-export class PrimaryButtonComponent  implements OnInit {
-  @Input() variant: string = 'primary';
+export class PrimaryButtonComponent{
+  @Input() label: string = 'Primary';
+  @Input() variant: ButtonVariant = 'primary';
   @Input() size: ButtonSize = 'md';
+  @Input() rounded: 'md' | 'lg' | 'full' = 'full';
   @Input() state: ButtonState = 'idle';
   @Input() disabled = false;
   @Input() type : 'button' | 'submit' | 'reset' = 'button';
   @Input() iconRight = false;
+  @Input() iconLeft = false;
   @Input() preventMultipleClicks = false;
   @Input() clickCooldownMs = 500;
+  @Input() textColor?: string;
+  @Input() backgroundColor?: string;
 
   @Output() buttonClick = new EventEmitter<MouseEvent>();
 
-  ngOnInit(): void {
-
-    console.log('PrimatryButtonComponent Initial mode!');
-
-  }
   handleClick(event: MouseEvent): void {
     this.buttonClick.emit(event);
   }

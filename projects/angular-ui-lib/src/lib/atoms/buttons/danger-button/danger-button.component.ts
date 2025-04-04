@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {BaseButtonComponent, ButtonSize, ButtonState, ButtonVariant} from '../base-button/base-button.component';
 
 @Component({
-  selector: 'lib-secondary-button',
+  selector: 'lib-danger-button',
   standalone: true,
   imports: [CommonModule, BaseButtonComponent],
   template: `
@@ -28,11 +28,11 @@ import {BaseButtonComponent, ButtonSize, ButtonState, ButtonVariant} from '../ba
     </lib-base-button>
   `
 })
-export class SecondaryButtonComponent {
-  @Input() label: string = 'Secondary';
-  @Input() variant: ButtonVariant = 'secondary';
-  @Input() size: ButtonSize = 'md';
+export class DangerButtonComponent {
+  @Input() label: string = 'Danger';
   @Input() rounded: 'md' | 'lg' | 'full' = 'full';
+  @Input() variant: ButtonVariant = 'danger';
+  @Input() size: ButtonSize = 'md';
   @Input() state: ButtonState = 'idle';
   @Input() disabled = false;
   @Input() type: 'button' | 'submit' | 'reset' = 'button';

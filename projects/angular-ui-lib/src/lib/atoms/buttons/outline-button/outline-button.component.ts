@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {BaseButtonComponent, ButtonSize, ButtonState, ButtonVariant} from '../base-button/base-button.component';
 
 @Component({
-  selector: 'lib-secondary-button',
+  selector: 'lib-outline-button',
   standalone: true,
   imports: [CommonModule, BaseButtonComponent],
   template: `
@@ -28,9 +28,9 @@ import {BaseButtonComponent, ButtonSize, ButtonState, ButtonVariant} from '../ba
     </lib-base-button>
   `
 })
-export class SecondaryButtonComponent {
-  @Input() label: string = 'Secondary';
-  @Input() variant: ButtonVariant = 'secondary';
+export class OutlineButtonComponent {
+  @Input() label: string = 'Outline';
+  @Input() variant: ButtonVariant = 'outline';
   @Input() size: ButtonSize = 'md';
   @Input() rounded: 'md' | 'lg' | 'full' = 'full';
   @Input() state: ButtonState = 'idle';

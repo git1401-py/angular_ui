@@ -47,7 +47,7 @@ export const defaultLightTheme: ThemeColors = {
   'popover-foreground': 'hsl(220.9 39.3% 11%)',
   border: 'hsl(220 13% 91%)',
   input: 'hsl(220 13% 91%)',
-  ring: 'hsl(224.3 76.3% 48%)',
+  ring: 'hsl(23.4 2% 23.4%)',
 };
 
 export const defaultDarkTheme: ThemeColors = {
@@ -71,7 +71,7 @@ export const defaultDarkTheme: ThemeColors = {
   'popover-foreground': 'hsl(210 20% 98%)',
   border: 'hsl(215 27.9% 16.9%)',
   input: 'hsl(215 27.9% 16.9%)',
-  ring: 'hsl(263.4 70% 50.4%)',
+  ring: 'hsl(23.4 2% 23.4%)',
 };
 
 @Injectable({
@@ -168,6 +168,8 @@ export class ThemeService {
           return JSON.parse(savedColors);
         } catch (e) {
           console.error('Could not parse saved theme colors', e);
+          localStorage.removeItem(this.themeColorsKey); // پیشنهاد: پاک‌کردن داده خراب
+
         }
       }
     }
